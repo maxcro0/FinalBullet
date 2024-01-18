@@ -46,7 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dungeon.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dungeon.Designer.cs">
+      <DependentUpon>Dungeon.cs</DependentUpon>
+    </Compile>
     <Compile Include="Enemy1.cs" />
+    <Compile Include="Event.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Event.Designer.cs">
+      <DependentUpon>Event.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +77,12 @@
     <Compile Include="GameScreencs.Designer.cs">
       <DependentUpon>GameScreencs.cs</DependentUpon>
     </Compile>
+    <Compile Include="ItemGain.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ItemGain.Designer.cs">
+      <DependentUpon>ItemGain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Menu.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -75,7 +93,19 @@
     <Compile Include="Program.cs" />
     <Compile Include="ProjectileCircle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Status.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Status.Designer.cs">
+      <DependentUpon>Status.cs</DependentUpon>
+    </Compile>
     <Compile Include="StringProjectile.cs" />
+    <EmbeddedResource Include="Dungeon.resx">
+      <DependentUpon>Dungeon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Event.resx">
+      <DependentUpon>Event.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -84,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GameScreencs.resx">
       <DependentUpon>GameScreencs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemGain.resx">
+      <DependentUpon>ItemGain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
@@ -97,6 +130,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Status.resx">
+      <DependentUpon>Status.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -17,8 +17,9 @@ namespace BulletHell
         public int yCenter;
         public float angle;
         public float newAngle;
+        int damage;
 
-        public ProjectileCircle(float _x, float _y, float _xSpeed, float _ySpeed, int _size, int _speed)
+        public ProjectileCircle(float _x, float _y, float _xSpeed, float _ySpeed, int _size, int _speed, int _damage)
         {
             //Variables used in the class
             x = _x;
@@ -29,8 +30,9 @@ namespace BulletHell
             speed = _speed;
             xCenter = (int)x + size / 2;
             yCenter = (int)y + size / 2;
+            damage = _damage;
         }
-        public ProjectileCircle(float _x, float _y, float _xSpeed, float _ySpeed, int _size, int _speed, float _angle)
+        public ProjectileCircle(float _x, float _y, float _xSpeed, float _ySpeed, int _size, int _speed, float _angle, int _damage)
         {
             //Secondary constructor and variables 
             x = _x;
@@ -43,6 +45,7 @@ namespace BulletHell
             newAngle = _angle;
             xCenter = (int)x + size / 2;
             yCenter = (int)y + size / 2;
+            damage = _damage;
         }
 
         public void Move()

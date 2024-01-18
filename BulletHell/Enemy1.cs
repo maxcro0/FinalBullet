@@ -17,12 +17,13 @@ namespace BulletHell
         public int yCenter;
         int altEye;
         public int gapSwitch;
+        string monst;
         List<ProjectileCircle> attack1List;
         List<ProjectileCircle> attack2List;
         public List<ProjectileCircle> attack2rotatorsList;
 
 
-        public Enemy1(int _x, int _y, int _xSpeed, int _ySpeed)
+        public Enemy1(int _x, int _y, int _xSpeed, int _ySpeed, string _monst)
         {
             x = _x;
             y = _y;
@@ -32,7 +33,7 @@ namespace BulletHell
             yCenter = y+height/2;
             altEye = 30;
             gapSwitch = 37;
-            
+            monst = _monst;
         }
 
         public List<ProjectileCircle> attack1()
@@ -53,7 +54,7 @@ namespace BulletHell
 
                 //  //bullet object requires float values to draw on screen
                 //  ProjectileCircle p = new ProjectileCircle(x, y, size, bulletSpeed, (float)xStep, (float)-yStep);
-                ProjectileCircle p = new ProjectileCircle(xCenter,yCenter, (float)xStep, (float)yStep, 8, 3,thetaAngle);
+                ProjectileCircle p = new ProjectileCircle(xCenter,yCenter, (float)xStep, (float)yStep, 8, 3,thetaAngle,7);
                 attack1List.Add(p);
             }
 
@@ -79,7 +80,7 @@ namespace BulletHell
 
                 //  //bullet object requires float values to draw on screen
                 //  ProjectileCircle p = new ProjectileCircle(x, y, size, bulletSpeed, (float)xStep, (float)-yStep);
-                ProjectileCircle p = new ProjectileCircle(xCenter, yCenter, (float)xStep, (float)yStep, 8, 1, thetaAngle);
+                ProjectileCircle p = new ProjectileCircle(xCenter, yCenter, (float)xStep, (float)yStep, 8, 1, thetaAngle,6);
                 attack2List.Add(p);
                 if (altEye == 30)
                 {
@@ -120,7 +121,7 @@ namespace BulletHell
                     randomX = 340;
                 }
                 
-                ProjectileCircle p = new ProjectileCircle(randomX, y0, direction, 0, 6, 3);
+                ProjectileCircle p = new ProjectileCircle(randomX, y0, direction, 0, 6, 3,10);
                 
                 attack2List.Add(p);
             }
@@ -139,8 +140,8 @@ namespace BulletHell
 
                 //  //bullet object requires float values to draw on screen
                 //  ProjectileCircle p = new ProjectileCircle(x, y, size, bulletSpeed, (float)xStep, (float)-yStep);
-                ProjectileCircle p = new ProjectileCircle(45,60, (float)xStep, (float)yStep, 8, 5, thetaAngle);
-                ProjectileCircle b = new ProjectileCircle(300,60,(float)xStep, (float)yStep, 8, 5, thetaAngle);
+                ProjectileCircle p = new ProjectileCircle(45,60, (float)xStep, (float)yStep, 8, 5, thetaAngle,6);
+                ProjectileCircle b = new ProjectileCircle(300,60,(float)xStep, (float)yStep, 8, 5, thetaAngle,6);
 
                 attack2List.Add(p);
                 attack2List.Add(b);

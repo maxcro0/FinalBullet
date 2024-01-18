@@ -13,7 +13,7 @@ namespace BulletHell
     public partial class GameScreencs : UserControl
     {
         public static int points = 0;
-        public static int graze = 0 ;
+        public static int graze = 0;
         int bombamm = 3;
         double healthBar = 338;
         double healthRatio;
@@ -52,6 +52,16 @@ namespace BulletHell
         Point[] arrow;
         public Point phase2attack1;
         public Point phase2attack2;
+        public static bool dark;
+        public static bool curse;
+        public static bool eve;
+        public static bool tense;
+        public static bool torch;
+        Random random = new Random();
+        int tempMove;
+        string ranMove;
+        int ranMovetime;
+
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -67,9 +77,9 @@ namespace BulletHell
         {
             // Initializing Me, Boss, Boss arrow, Phase 2 points, Health ratio
             InitializeComponent();
-            
-            me = new Player(175, 415, 4, 4);
-            boss = new Enemy1(153, 25, 2, 2);
+
+            me = new Player(270, 300, 4, 4, Dungeon.job);
+            boss = new Enemy1(270, 30, 2, 2, "goblin");
             arrow = new Point[] { new Point(boss.x, 445), new Point(boss.xCenter, 435), new Point(boss.x + boss.width, 445) };
             phase2attack1 = new Point(45, 35);
             phase2attack2 = new Point(405, 35);
@@ -77,6 +87,7 @@ namespace BulletHell
             points = 0;
             graze = 0;
             win = false;
+            gameTimer.Start();
 
 
 
@@ -166,14 +177,15 @@ namespace BulletHell
             // First phase timer and Bomb timer
             attack1Timer++;
             bombTimer++;
+            RandomMove();
 
             //Checks if lives are gone
-            if (me.lives <= 0)
+            if (me.health <= 0)
             {
                 gameTimer.Enabled = false;
                 Form1.ChangeScreen(this, new Gameover());
             }
-           
+
             //Checks if you just died and adds to the invulnerability window if you did
             if (justDied == true)
             {
@@ -187,25 +199,9 @@ namespace BulletHell
                 justDied = false;
             }
 
-            //Changes phase 1 to phase 2
-            if (boss.health <= 0 && phase1 == true)
-            {
-                phase1 = false;
-                phase2 = true;
-                boss.health = 1500;
-                maxHealth = boss.health;
-                healthRatio = healthBar / boss.health;
-            }
-            
-            //Changes phase 2 to phase 3
-            if (boss.health <= 0 && phase2 == true)
-            {
-                phase2 = false;
-                phase3 = true;
-                boss.health = 800;
-                maxHealth = boss.health;
-                healthRatio = healthBar / boss.health;
-            }
+
+
+
 
             //You Win
             if (boss.health <= 0 && phase3 == true)
@@ -221,7 +217,7 @@ namespace BulletHell
             {
                 me.Move("left");
             }
-            else if (rightArrowDown && me.x + 152 < this.Width - me.size)
+            else if (rightArrowDown && me.x < this.Width - me.size - 10)
             {
                 me.Move("right");
             }
@@ -230,7 +226,7 @@ namespace BulletHell
             {
                 me.Move("up");
             }
-            else if (downArrowDown && me.y < this.Height - 25 - me.size)
+            else if (downArrowDown && me.y < 460 - 87 - me.size)
             {
                 me.Move("down");
             }
@@ -270,12 +266,13 @@ namespace BulletHell
                         me.x = 174;
                         me.y = 415;
                         justDied = true;
-                        me.lives--;
+                        me.health--;
                         break;
                     }
                 }
 
             }
+
 
 
             //Moves your shots up and checks for collisions with boss
@@ -288,163 +285,70 @@ namespace BulletHell
                 }
             }
 
-            //Moves boss in phase 1
-            if (phase1 == true)
-            {
-                if (boss.y < 200)
-                {
-                    boss.Move("down");
-                }
-                if (boss.y >= 200)
-                {
-                    if (boss.x <= 0)
-                    {
-                        goLeft = false;
-                    }
-
-                    if (boss.x >= 315)
-                    {
-                        goLeft = true;
-                    }
-
-                    if (goLeft == true)
-                    {
-                        boss.Move("left");
-                    }
-
-                    if (goLeft == false)
-                    {
-                        boss.Move("right");
-                    }
-
-                }
-
-                //Shoots projectiles in phase 1
-                if (attack1Timer == 20)
-                {
-                    projectiles.AddRange(boss.attack1());
-                    attack1Timer = 0;
-                }
-
-                deleteProjectiles();
-
-            }
-
-            //Moves boss to center if its phase 2
-            if (phase2 == true)
-            {
-                attack2Timer++;
-
-                if (boss.xCenter > 225 - boss.width)
-                {
-                    boss.Move("left");
-                }
-
-                if (boss.xCenter < 225 - boss.width)
-                {
-                    boss.Move("right");
-                }
-
-                if (boss.yCenter < 200)
-                {
-                    boss.Move("down");
-                }
-
-                if (boss.yCenter > 200)
-                {
-                    boss.Move("up");
-                }
-
-                //Starts shooting if boss is done moving
-                if (boss.xCenter == 176 && boss.yCenter == 200)
-                {
-                    if (attack2Timer == 45)
-                    {
-                        projectiles.AddRange(boss.attack2());
-                        attack1Timer = 0;
-
-
-                    }
-                    if (attack2Timer > 45)
-                    {
-                        attack2Timer = 0;
-                    }
-                }
-
-
-
-            }
-
-            //Moves boss if its phase 3
-            if (phase3 == true)
-            {
-                attack3Timer++;
-                if (moveDirection == "right" && boss.x > 250)
-                {
-                    moveDirection = "down";
-                }
-
-                if (moveDirection == "down" && boss.y >= 250)
-                {
-                    moveDirection = "left";
-                }
-
-                if (moveDirection == "left" && boss.x <= 50)
-                {
-                    moveDirection = "up";
-                }
-
-                if ((moveDirection == "up" && boss.y <= 50))
-                {
-                    moveDirection = "right";
-                }
-
-                //Shoots in intervals
-                if (attack3Timer == 25)
-                {
-                    projectiles.AddRange(boss.attack1());
-                    attack3Timer = 0;
-                }
-                deleteProjectiles();
-
-                //Moves boss in move direction
-                boss.Move(moveDirection);
-
-
-
-            }
-
             arrow = new Point[] { new Point(boss.x, 445), new Point(boss.xCenter, 435), new Point(boss.x + boss.width, 445) };
 
 
             Refresh();
         }
 
-       
+        private void RandomMove()
+        {
+
+
+
+            if (boss.x + boss.width > 0 && boss.x < this.Width - boss.width && boss.y + boss.height > 0 && boss.y < this.Height - boss.height && ranMovetime >= 40)
+            {
+                tempMove = random.Next(0, 4);
+
+                if (tempMove == 0)
+                {
+                    ranMove = "left";
+                }
+
+                else if (tempMove == 1)
+                {
+                    ranMove = "right";
+                }
+
+                else if (tempMove == 2)
+                {
+                    ranMove = "up";
+                }
+
+                else
+                {
+                    ranMove = "down";
+                }
+
+                boss.Move(ranMove);
+            }
+
+            
+        }
 
         private void GameScreencs_Paint(object sender, PaintEventArgs e)
         {
 
             //Shows player life
-            livesOut.Text = me.lives + "";
+            //livesOut.Text = me.lives + "";
 
 
             // Shows Health Bar
 
-            healthbarText = ($"{boss.health} / {maxHealth}");
-            e.Graphics.FillRectangle(grayBrush, 0, 20, 338, 20);
-            e.Graphics.FillRectangle(redBrush, 0, 25, (int)(boss.health * healthRatio), 10);
-            e.Graphics.DrawString(healthbarText, new Font("Arial", 10), whiteBrush, 155, 20);
+            // healthbarText = ($"{boss.health} / {maxHealth}");
+            // e.Graphics.FillRectangle(grayBrush, 0, 20, 338, 20);
+            //e.Graphics.FillRectangle(redBrush, 0, 25, (int)(boss.health * healthRatio), 10);
+            //e.Graphics.DrawString(healthbarText, new Font("Arial", 10), whiteBrush, 155, 20);
 
             //Shows Bomb
-            bombsOut.Text = bombamm + "";
+            //bombsOut.Text = bombamm + "";
 
             //Shows Points
             points = graze * 7 + (bombamm * 100);
-            pointsOut.Text = points + "";
+            //pointsOut.Text = points + "";
 
             //Shows Graze
-            grazeOut.Text = graze + "";
+            //grazeOut.Text = graze + "";
 
             //Draws boss position arrow
             e.Graphics.FillPolygon(whiteBrush, arrow);
