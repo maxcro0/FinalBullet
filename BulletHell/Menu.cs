@@ -35,6 +35,7 @@ namespace BulletHell
 
         private void controlButton_Click(object sender, EventArgs e)
         {
+            //Shows controls
             if (controlLabel.Visible == false)
             {
                 controlLabel.Visible = true;
@@ -48,18 +49,21 @@ namespace BulletHell
 
         private void mageButton_Click(object sender, EventArgs e)
         {
+            //Selects job
             Dungeon.job = "Mage";
             Form1.ChangeScreen(this, new Dungeon());
         }
 
         private void warriorButton_Click(object sender, EventArgs e)
         {
+            //Selects job
             Dungeon.job = "Warrior";
             Form1.ChangeScreen(this, new Dungeon());
         }
 
         private void rogueButton_Click(object sender, EventArgs e)
         {
+            //Selects job
             Dungeon.job = "Rogue";
             Form1.ChangeScreen(this, new Dungeon());
         }

@@ -17,7 +17,7 @@ namespace BulletHell
         public int yCenter;
         public float angle;
         public float newAngle;
-        int damage;
+        public  int damage;
 
         public ProjectileCircle(float _x, float _y, float _xSpeed, float _ySpeed, int _size, int _speed, int _damage)
         {

@@ -14,6 +14,8 @@ namespace BulletHell
     {
         public Status()
         {
+            //Congrats! You found the secret!!!!! This was meant to show player status,blessings and curses
+            //Blessings and curses were not implemented and I didn't add the status yet.
             InitializeComponent();
         }
     }

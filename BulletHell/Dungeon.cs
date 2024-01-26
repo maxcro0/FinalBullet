@@ -13,8 +13,10 @@ namespace BulletHell
     public partial class Dungeon : UserControl
     {
         public static string job;
+        //intended on storing the room you chose. Not implemented
         int choseRoom;
         string[] conditions = { "none", "dark", "torch", "curse", "event", "boss", "tense" };
+        //All condition lists for the room. Not implemented
         List<string> newCondition = new List<string>();
         List<string> myCondition = new List<string>();
         List<string> conditions1 = new List<string>();
@@ -145,20 +147,7 @@ namespace BulletHell
         {
             GenCon();
 
-           // for (int i = 0; i < newCondition.Count; i++)
-           // {
-           //     left1.Text += $"{newCondition[i]} \n";
-           //     conditions1.Add(newCondition[i]);
-           // }
-
-           //// GenCon();
-
-           // for (int i = 0; i < newCondition.Count; i++)
-           // {
-           //     right1.Text += $"{newCondition[i]} \n";
-           //     conditions2.Add(newCondition[i]);
-           // }
-
+            //Prints all conditions visable
             for (int i = 0; i < conditions1.Count; i++)
             {
                 left1.Text += $"{conditions1[i]} \n";
@@ -172,20 +161,55 @@ namespace BulletHell
 
         private void condSwitch()
         {
+            //Intended to switch room conditions to show upper layer once out of gamescreen. Not implemented
             choseRoom = 1;
 
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            int x = 6;
-
-        }
+      
 
         private void left1_Click(object sender, EventArgs e)
         {
             choseRoom = 1;
+
+            //Changes gamescreen bool conditions if they are present. Works, doesn't do anything 
+            if (conditions1.Contains("dark"))
+            {
+                GameScreencs.dark = true;
+            }
+
+            if (conditions1.Contains("curse"))
+            {
+                GameScreencs.curse = true;
+            }
+
+            if (conditions1.Contains("event"))
+            {
+                GameScreencs.eve = true;
+            }
+
+            if (conditions1.Contains("tense"))
+            {
+                GameScreencs.tense = true;
+            }
+
+            if (conditions1.Contains("torch"))
+            {
+                GameScreencs.torch = true;
+            }
+
+            for (int i = 0; i < conditions1.Count; i++)
+            {
+                myCondition.Add(conditions1[i]);
+            }
+            Form1.ChangeScreen(this, new GameScreencs());
+        }
+
+        private void right1_Click(object sender, EventArgs e)
+        {
+            //Changes gamescreen bool conditions if they are present. Works, doesn't do anything 
+            choseRoom = 2;
 
             if (conditions1.Contains("dark"))
             {
@@ -212,7 +236,7 @@ namespace BulletHell
                 GameScreencs.torch = true;
             }
 
-            for (int i = 0 ; i < conditions1.Count; i++)
+            for (int i = 0; i < conditions1.Count; i++)
             {
                 myCondition.Add(conditions1[i]);
             }

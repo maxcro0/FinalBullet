@@ -29,10 +29,6 @@
         private void InitializeComponent()
         {
             this.currentBox = new System.Windows.Forms.Label();
-            this.statBox = new System.Windows.Forms.Label();
-            this.cd1Out = new System.Windows.Forms.Label();
-            this.cd2Out = new System.Windows.Forms.Label();
-            this.cd3Out = new System.Windows.Forms.Label();
             this.left1 = new System.Windows.Forms.Label();
             this.right1 = new System.Windows.Forms.Label();
             this.left2 = new System.Windows.Forms.Label();
@@ -51,48 +47,6 @@
             this.currentBox.TabIndex = 0;
             this.currentBox.Text = "Current";
             this.currentBox.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // statBox
-            // 
-            this.statBox.BackColor = System.Drawing.Color.DimGray;
-            this.statBox.Location = new System.Drawing.Point(451, 470);
-            this.statBox.Name = "statBox";
-            this.statBox.Size = new System.Drawing.Size(186, 62);
-            this.statBox.TabIndex = 1;
-            this.statBox.Text = "label1";
-            // 
-            // cd1Out
-            // 
-            this.cd1Out.BackColor = System.Drawing.Color.DimGray;
-            this.cd1Out.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cd1Out.Location = new System.Drawing.Point(13, 473);
-            this.cd1Out.Name = "cd1Out";
-            this.cd1Out.Size = new System.Drawing.Size(61, 59);
-            this.cd1Out.TabIndex = 2;
-            this.cd1Out.Text = "CD1";
-            this.cd1Out.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // cd2Out
-            // 
-            this.cd2Out.BackColor = System.Drawing.Color.DimGray;
-            this.cd2Out.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cd2Out.Location = new System.Drawing.Point(95, 473);
-            this.cd2Out.Name = "cd2Out";
-            this.cd2Out.Size = new System.Drawing.Size(61, 59);
-            this.cd2Out.TabIndex = 3;
-            this.cd2Out.Text = "CD2";
-            this.cd2Out.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // cd3Out
-            // 
-            this.cd3Out.BackColor = System.Drawing.Color.DimGray;
-            this.cd3Out.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cd3Out.Location = new System.Drawing.Point(179, 473);
-            this.cd3Out.Name = "cd3Out";
-            this.cd3Out.Size = new System.Drawing.Size(61, 59);
-            this.cd3Out.TabIndex = 4;
-            this.cd3Out.Text = "CD3";
-            this.cd3Out.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // left1
             // 
@@ -114,6 +68,7 @@
             this.right1.Size = new System.Drawing.Size(132, 128);
             this.right1.TabIndex = 6;
             this.right1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.right1.Click += new System.EventHandler(this.right1_Click);
             // 
             // left2
             // 
@@ -166,10 +121,6 @@
             this.Controls.Add(this.left2);
             this.Controls.Add(this.right1);
             this.Controls.Add(this.left1);
-            this.Controls.Add(this.cd3Out);
-            this.Controls.Add(this.cd2Out);
-            this.Controls.Add(this.cd1Out);
-            this.Controls.Add(this.statBox);
             this.Controls.Add(this.currentBox);
             this.Name = "Dungeon";
             this.Size = new System.Drawing.Size(650, 570);
@@ -180,10 +131,6 @@
         #endregion
 
         private System.Windows.Forms.Label currentBox;
-        private System.Windows.Forms.Label statBox;
-        private System.Windows.Forms.Label cd1Out;
-        private System.Windows.Forms.Label cd2Out;
-        private System.Windows.Forms.Label cd3Out;
         private System.Windows.Forms.Label left1;
         private System.Windows.Forms.Label right1;
         private System.Windows.Forms.Label left2;

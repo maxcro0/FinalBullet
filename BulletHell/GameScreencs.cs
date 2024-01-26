@@ -15,10 +15,11 @@ namespace BulletHell
         public static int points = 0;
         public static int graze = 0;
         int bombamm = 3;
-        double healthBar = 338;
+        double healthBar = 500;
         double healthRatio;
         string healthbarText;
-        int maxHealth = 400;
+        int maxHealth;
+        int myMaxHP;
         string moveDirection = "right";
         public static bool win = false;
 
@@ -40,6 +41,7 @@ namespace BulletHell
         bool justDied;
         List<ProjectileCircle> projectiles = new List<ProjectileCircle>();
         List<StringProjectile> friendProjectiles = new List<StringProjectile>();
+        List<Enemy1> enemies = new List<Enemy1>();
         int attack1Timer = 0;
         int attack2Timer = 0;
         int attack3Timer = 0;
@@ -60,7 +62,7 @@ namespace BulletHell
         Random random = new Random();
         int tempMove;
         string ranMove;
-        int ranMovetime;
+        public static int ranMovetime = 300;
 
 
         private void label1_Click(object sender, EventArgs e)
@@ -79,13 +81,15 @@ namespace BulletHell
             InitializeComponent();
 
             me = new Player(270, 300, 4, 4, Dungeon.job);
-            boss = new Enemy1(270, 30, 2, 2, "goblin");
+            myMaxHP = me.health;
+            boss = new Enemy1(270, 30, 2, 2, "slime");
             arrow = new Point[] { new Point(boss.x, 445), new Point(boss.xCenter, 435), new Point(boss.x + boss.width, 445) };
             phase2attack1 = new Point(45, 35);
             phase2attack2 = new Point(405, 35);
             healthRatio = healthBar / boss.health;
             points = 0;
             graze = 0;
+            maxHealth = boss.health;
             win = false;
             gameTimer.Start();
 
@@ -177,7 +181,17 @@ namespace BulletHell
             // First phase timer and Bomb timer
             attack1Timer++;
             bombTimer++;
+            ranMovetime++;
             RandomMove();
+            moveCheck();
+            boss.Move(ranMove);
+            healthLabel.Text = me.health + "";
+
+            if (attack1Timer > 20)
+            {
+                projectiles.AddRange(boss.attack1());
+                attack1Timer = 0;
+            }
 
             //Checks if lives are gone
             if (me.health <= 0)
@@ -193,7 +207,7 @@ namespace BulletHell
             }
 
             //After a second, you are no longer invulnerable
-            if (invulTimer == 50)
+            if (invulTimer == 3)
             {
                 invulTimer = 0;
                 justDied = false;
@@ -204,11 +218,11 @@ namespace BulletHell
 
 
             //You Win
-            if (boss.health <= 0 && phase3 == true)
+            if (boss.health <= 0)
             {
-                win = true;
+
                 gameTimer.Enabled = false;
-                Form1.ChangeScreen(this, new Gameover());
+                Form1.ChangeScreen(this, new ItemGain());
 
             }
 
@@ -235,7 +249,7 @@ namespace BulletHell
             if (shooting == true)
             {
                 shotTimer++;
-                if (shotTimer == 2)
+                if (shotTimer == (int)(6 - (Player.attackRate / 100)))
                 {
                     StringProjectile p = new StringProjectile(me.x + me.size / 2, me.y, 20, 20, 3, 5);
                     friendProjectiles.Add(p);
@@ -263,11 +277,8 @@ namespace BulletHell
 
                     if (p.Collision(me))
                     {
-                        me.x = 174;
-                        me.y = 415;
+                        me.health -= p.damage;
                         justDied = true;
-                        me.health--;
-                        break;
                     }
                 }
 
@@ -281,7 +292,19 @@ namespace BulletHell
                 p.Move("up");
                 if (p.Collision(boss))
                 {
-                    boss.health -= 1;
+                    boss.health -= me.damage;
+
+                    //Lifesteal code
+                    if (me.health < myMaxHP)
+                    {
+                        me.health += (int)(me.damage * (me.lifesteal / 100));
+                    }
+
+                    if (me.health > myMaxHP)
+                    {
+                        me.health = myMaxHP;
+                    }
+
                 }
             }
 
@@ -291,12 +314,17 @@ namespace BulletHell
             Refresh();
         }
 
+        private void GameScreencs_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void RandomMove()
         {
 
 
-
-            if (boss.x + boss.width > 0 && boss.x < this.Width - boss.width && boss.y + boss.height > 0 && boss.y < this.Height - boss.height && ranMovetime >= 40)
+            //Moves the boss randomly on the screen
+            if (ranMovetime > 100)
             {
                 tempMove = random.Next(0, 4);
 
@@ -320,11 +348,40 @@ namespace BulletHell
                     ranMove = "down";
                 }
 
-                boss.Move(ranMove);
+                ranMovetime = 0;
             }
 
-            
         }
+
+
+
+
+        private void moveCheck()
+        {
+            //Checks if boss in the boundries and forces them the othe way
+            if (boss.x < 0)
+            {
+                ranMove = "right";
+            }
+
+            else if (boss.y < 0)
+
+            {
+                ranMove = "down";
+            }
+
+            else if (boss.y + boss.height > 290)
+            {
+                ranMove = "up";
+            }
+
+            else if (boss.x + boss.width > 500)
+            {
+                ranMove = "left";
+            }
+        }
+
+
 
         private void GameScreencs_Paint(object sender, PaintEventArgs e)
         {
@@ -335,10 +392,10 @@ namespace BulletHell
 
             // Shows Health Bar
 
-            // healthbarText = ($"{boss.health} / {maxHealth}");
-            // e.Graphics.FillRectangle(grayBrush, 0, 20, 338, 20);
-            //e.Graphics.FillRectangle(redBrush, 0, 25, (int)(boss.health * healthRatio), 10);
-            //e.Graphics.DrawString(healthbarText, new Font("Arial", 10), whiteBrush, 155, 20);
+            healthbarText = ($"{boss.health} / {maxHealth}");
+            e.Graphics.FillRectangle(grayBrush, 0, 20, 650, 20);
+            e.Graphics.FillRectangle(redBrush, 0, 25, (int)(boss.health * healthRatio), 10);
+            e.Graphics.DrawString(healthbarText, new Font("Arial", 10), whiteBrush, 230, 20);
 
             //Shows Bomb
             //bombsOut.Text = bombamm + "";
@@ -382,6 +439,7 @@ namespace BulletHell
 
             }
 
+            healthLabel.Text = me.health + "";
 
 
         }
